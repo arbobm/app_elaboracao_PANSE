@@ -33,9 +33,9 @@ proj_albrs2k <- st_read("C:/Users/bruna/OneDrive/01_BaseSIG/Brasil/BR_UF_2020/BR
 
 ## load data
 
-source("limites.R")
-source("oportunidades.R")
-source("atividades.R")
+source("01_limites.R")
+source("02_oportunidades.R")
+source("03_atividades.R")
 
 
 # setup -------------------------------------------------------------------
@@ -227,7 +227,7 @@ server <- function(input, output, session) {
     cores_biomas <- c(
       "#B3964F", # Caatinga
       "#B7DB6E", # Cerrado
-      "#86A686" # Mata Atlântica
+      "#86A686"  # Mata Atlântica
     )
     
     pal_bioams <- colorFactor(cores_biomas, domain = biomas$Bioma)
