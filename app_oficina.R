@@ -126,7 +126,7 @@ ui <- navbarPage("Oficina de Elaboração do PAN Herpetofauna do Sudeste",
                  
                  # aba 1 - mapa ------------------------------------------------------------
                  
-                 tabPanel("Interactive map",
+                 tabPanel("Base de dados",
                           
                           tags$head(includeHTML(("google-analytics.html"))),
                           div(class="outer",
@@ -157,10 +157,11 @@ ui <- navbarPage("Oficina de Elaboração do PAN Herpetofauna do Sudeste",
                                             
                                             ## selecionar especies beneficiadas
                                             selectizeInput(inputId = "especiesbe",
-                                            label = h5("Espécies potencialmente beneficiadas:"), 
-                                            choices = species_list, 
-                                            multiple = TRUE,
+                                                           label = h5("Espécies potencialmente beneficiadas:"), 
+                                                           choices = species_list, 
+                                                           multiple = TRUE,
                                             ),
+                                            
                                             
                                             actionButton("update", "Atualizar"),
                                             
@@ -315,6 +316,18 @@ server <- function(input, output, session) {
                   label = ~ htmlEscape(Bioma),
                   options = pathOptions(pane = "labels")
       ) %>%
+      addPolygons(group = "Bacias",
+                  data = bacias_ana,
+                  fill = TRUE,
+                  stroke = TRUE,
+                  fillColor = "lightblue",
+                  color = "lightblue",
+                  weight = 2,
+                  smoothFactor = 1,
+                  fillOpacity = 0.0000005,
+                  label = ~ htmlEscape(name),
+                  options = pathOptions(pane = "labels")
+      ) %>%
       addLayersControl(
         baseGroups = c(
           # "Topography", 
@@ -328,6 +341,7 @@ server <- function(input, output, session) {
           "Ilhas do Sudeste",
           "Estados do SE",
           "Estados",
+          "Bacias",
           "Biomas",
           "Labels"
           ),
@@ -338,7 +352,8 @@ server <- function(input, output, session) {
                 "Ilhas do Sudeste",
                 "Estados",
                 "Labels",
-                "Biomas")) %>%
+                "Biomas",
+                "Bacias")) %>%
       addScaleBar(position = c("bottomleft"), options = scaleBarOptions()) 
   })
   
@@ -755,9 +770,7 @@ server <- function(input, output, session) {
               barragens_anm$status_dce,
               "</br>Status DCO atual: ",
               barragens_anm$status_dco
-            )) %>% 
-          # addPolygons(data = espelhos_dagua,
-          #             group = "espelho d'água") %>% 
+            )) %>%  
           addLegend(position = "topright",
                     group = "atividade",
                     data = barragens_anm,
