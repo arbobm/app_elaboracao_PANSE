@@ -46,3 +46,13 @@ ilhas_se <- ilhas_se %>%
   ) %>%
   st_transform(crs = 4326) 
 
+bacias_ana <- st_read("C:/Users/bruna/OneDrive/01_BaseSIG/Brasil/MapBiomas/MapBiomas7/dashboard_river-basins-static-layer/dashboard_river-basins-static-layer.shp",
+                      options = "ENCODING=WINDOWS-1252")
+
+
+
+bacias_ana <- bacias_ana %>% 
+  dplyr::filter(category == "level_2_basin") %>% 
+  st_transform(4326) %>% 
+  st_filter(ufs_se) %>% 
+  st_simplify() 
